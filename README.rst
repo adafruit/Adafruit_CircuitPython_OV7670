@@ -30,7 +30,6 @@ This driver depends on:
 
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
 * `Bus Device <https://github.com/adafruit/Adafruit_CircuitPython_BusDevice>`_
-* `Register <https://github.com/adafruit/Adafruit_CircuitPython_Register>`_
 
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
@@ -38,19 +37,36 @@ This is easily achieved by downloading
 or individual libraries can be installed using
 `circup <https://github.com/adafruit/circup>`_.
 
-.. todo:: Describe the Adafruit product this library works with. For PCBs, you can also add the
-image fromn the assets folder in the PCB's gihub repo.
-
-`Purchase one from the Adafruit shop <http://www.adafruit.com/products/>`_
-
+.. :: Describe the Adafruit product this library works with. For PCBs, you can also add the image from the assets folder in the PCB's github repo.
+.. :: `Purchase one from the Adafruit shop <http://www.adafruit.com/products/>`_
 
 
 
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the
-examples folder and be included in docs/examples.rst.
+On an Adafruit Metro M4 Grand Central, capture a 40x30 image into a buffer:
+
+.. code-block:: python3
+
+    import board
+    from adafruit_ov7670 import OV7670
+
+    cam = OV7670(
+        bus,
+        data0=board.PCC_D0,
+        clock=board.PCC_CLK,
+        vsync=board.PCC_DEN1,
+        href=board.PCC_DEN2,
+        mclk=board.D29,
+        shutdown=board.D39,
+        reset=board.D38,
+    )
+    cam.size = OV7670_SIZE_DIV16
+
+    buf = bytearray(2 * cam.width * cam.height)
+
+    cam.capture(buf)
 
 Contributing
 ============
