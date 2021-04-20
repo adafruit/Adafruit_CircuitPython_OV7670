@@ -39,31 +39,47 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
 # Supported color formats
-OV7670_COLOR_RGB = 0  # RGB565 big-endian
-OV7670_COLOR_YUV = 1  # YUV/YCbCr 4:2:2 big-endian
+OV7670_COLOR_RGB = 0
+"""RGB565 big-endian"""
+OV7670_COLOR_YUV = 1
+"""YUV/YCbCr 422 big-endian"""
 
 # Supported sizes (VGA division factor) for OV7670_set_size()
-OV7670_SIZE_DIV1 = 0  # 640 x 480
-OV7670_SIZE_DIV2 = 1  # 320 x 240
-OV7670_SIZE_DIV4 = 2  # 160 x 120
-OV7670_SIZE_DIV8 = 3  # 80 x 60
-OV7670_SIZE_DIV16 = 4  # 40 x 30
+OV7670_SIZE_DIV1 = 0
+"""640 x 480"""
+OV7670_SIZE_DIV2 = 1
+"""320 x 240"""
+OV7670_SIZE_DIV4 = 2
+"""160 x 120"""
+OV7670_SIZE_DIV8 = 3
+"""80 x 60"""
+OV7670_SIZE_DIV16 = 4
+"""40 x 30"""
 
 # Test patterns
-OV7670_TEST_PATTERN_NONE = 0  # Disable test pattern
-OV7670_TEST_PATTERN_SHIFTING_1 = 1  # "Shifting 1" pattern
-OV7670_TEST_PATTERN_COLOR_BAR = 2  # 8 color bars
-OV7670_TEST_PATTERN_COLOR_BAR_FADE = 3  # Color bars w/fade to white
+OV7670_TEST_PATTERN_NONE = 0
+"""Normal operation mode (no test pattern)"""
+OV7670_TEST_PATTERN_SHIFTING_1 = 1
+""""Shifting 1" pattern"""
+OV7670_TEST_PATTERN_COLOR_BAR = 2
+"""8 color bars"""
+OV7670_TEST_PATTERN_COLOR_BAR_FADE = 3
+"""Color bars w/fade to white"""
 
 # Table of bit patterns for the different supported night modes.
 # There's a "same frame rate" option for OV7670 night mode but it
 # doesn't seem to do anything useful and can be skipped over.
-OV7670_NIGHT_MODE_OFF = 0  # Disable night mode
-OV7670_NIGHT_MODE_2 = 0b10100000  # Night mode 1/2 frame rate
-OV7670_NIGHT_MODE_4 = 0b11000000  # Night mode 1/4 frame rate
-OV7670_NIGHT_MODE_8 = 0b11100000  # Night mode 1/8 frame rate
+OV7670_NIGHT_MODE_OFF = 0
+"""Disable night mode"""
+OV7670_NIGHT_MODE_2 = 0b10100000
+"""Night mode 1/2 frame rate"""
+OV7670_NIGHT_MODE_4 = 0b11000000
+"""Night mode 1/4 frame rate"""
+OV7670_NIGHT_MODE_8 = 0b11100000
+"""Night mode 1/8 frame rate"""
 
-OV7670_ADDR = 0x21  # Default I2C address if unspecified
+OV7670_ADDR = 0x21
+"""Default I2C address if unspecified"""
 
 _OV7670_REG_GAIN = const(0x00)  # AGC gain bits 7:0 (9:8 in VREF)
 _OV7670_REG_BLUE = const(0x01)  # AWB blue channel gain
@@ -498,27 +514,26 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         reset=None,
         mclk=None,
         mclk_frequency=16_000_000,
-        colorspace=OV7670_COLOR_RGB,
         i2c_address=0x21,
     ):  # pylint: disable=too-many-arguments
         """
         Args:
             i2c_bus (busio.I2C): The I2C bus used to configure the OV7670
-            i2c_address (int): The I2C address of the camera
-            data0 (microcontroller.Pin): The first of 8 parallel data capture pins
-            clock (microcontroller.Pin): The pixel clock from the OV7670
-            vsync (microcontroller.Pin): The vsync signal from the OV7670
-            href (microcontroller.Pin): The href signal from the OV7670
-            shutdown: The microcontroller.Pin that controls the camera's \
-                shutdown signal, also called the powerdown or enable pin, or \
-                None
-            reset: The microcontroller.Pin that controls the camera's reset \
-                signal, or enable pin, or None
-            mclk: The pin on which to create a master clock signal, or None
-            mclk_frequency: The frequency of the master clock to generate, \
-                ignored if mclk is None
-            colorspace: The colorspace to operate in
-            size: The size of image to capture
+            data0 (microcontroller.Pin): The first of 8 parallel data capture pins.
+            clock (microcontroller.Pin): The pixel clock from the OV7670.
+            vsync (microcontroller.Pin): The vsync signal from the OV7670.
+            href (microcontroller.Pin): The href signal from the OV7670, \
+                sometimes inaccurately called hsync.
+            shutdown (Optional[microcontroller.Pin]): If not None, the shutdown
+                signal to the camera, also called the powerdown or enable pin.
+            reset (Optional[microcontroller.Pin]): If not None, the reset signal
+                to the camera.
+            mclk (Optional[microcontroller.Pin]): The pin on which to create a
+                master clock signal, or None if the master clock signal is
+                already being generated.
+            mclk_frequency (int): The frequency of the master clock to generate, \
+                ignored if mclk is None, requred if it is specified
+            i2c_address (int): The I2C address of the camera.
         """
         # Initialize the master clock
         if mclk:
@@ -550,7 +565,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         time.sleep(0.001)
 
         self._colorspace = None
-        self.colorspace = colorspace
+        self.colorspace = OV7670_COLOR_RGB
 
         self._write_list(_OV7670_init)
 
@@ -570,7 +585,12 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         )
 
     def capture(self, buf):
-        """Capture an image into the buffer."""
+        """Capture an image into the buffer.
+
+        Args:
+            buf (Union[bytearray, memoryview]): A WritableBuffer to contain the \
+                captured image.  Note that this can be a ulab array or a displayio Bitmap.
+        """
         self._imagecapture.capture(buf)
 
     @property
@@ -592,7 +612,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def colorspace(self):
-        """Get or set the colorspace"""
+        """Get or set the colorspace, one of the ``OV7670_COLOR_`` constants."""
         return self._colorspace
 
     @colorspace.setter
@@ -602,6 +622,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     def deinit(self):
         """Deinitialize the camera"""
+        self._imagecapture.deinit()
         if self._mclk_pwm:
             self._mclk_pwm.deinit()
         if self._shutdown:
@@ -611,7 +632,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def size(self):
-        """Get or set the captured image size"""
+        """Get or set the captured image size, one of the ``OV7670_SIZE_`` constants."""
         return self._size
 
     @size.setter
@@ -621,7 +642,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def test_pattern(self):
-        """Get or set the test pattern"""
+        """Get or set the test pattern, one of the ``OV7670_TES_PATTERN_`` constants."""
         return self._test_pattern
 
     @test_pattern.setter
@@ -671,7 +692,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def night(self):
-        """Get or set the night-vision mode"""
+        """Get or set the night-vision mode, one of the ``OV7670_NIGHT_MODE_`` constants."""
         return self._night
 
     @night.setter
@@ -683,12 +704,12 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def product_id(self):
-        """Get the product id (PID) register"""
+        """Get the product id (PID) register.  The expected value is 0x76."""
         return self._read_register(_OV7670_REG_PID)
 
     @property
     def product_version(self):
-        """Get the version (VER) register"""
+        """Get the version (VER) register.  The expected value is 0x73."""
         return self._read_register(_OV7670_REG_VER)
 
     def _write_list(self, reg_list):
