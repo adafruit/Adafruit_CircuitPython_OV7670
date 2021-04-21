@@ -151,7 +151,7 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "Adafruit_CircuitPython_ov7670Library.tex",
+        "Adafruit_CircuitPython_OV7670Library.tex",
         "Adafruit CircuitPython ov7670 Library Documentation",
         author,
         "manual",
@@ -165,7 +165,7 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "Adafruit_CircuitPython_ov7670Library",
+        "Adafruit_CircuitPython_OV7670Library",
         "Adafruit CircuitPython ov7670 Library Documentation",
         [author],
         1,
@@ -180,10 +180,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "Adafruit_CircuitPython_ov7670Library",
+        "Adafruit_CircuitPython_OV7670Library",
         "Adafruit CircuitPython ov7670 Library Documentation",
         author,
-        "Adafruit_CircuitPython_ov7670Library",
+        "Adafruit_CircuitPython_OV7670Library",
         "One line description of project.",
         "Miscellaneous",
     ),
