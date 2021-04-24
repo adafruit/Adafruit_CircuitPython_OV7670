@@ -493,7 +493,7 @@ _OV7670_init = bytes(
 
 _window = [
     [9, 162, 2, 2],  # SIZE_DIV1  640x480 VGA
-    [10, 174, 4, 2],  # SIZE_DIV2  320x240 QVGA
+    [10, 174, 0, 2],  # SIZE_DIV2  320x240 QVGA
     [11, 186, 2, 2],  # SIZE_DIV4  160x120 QQVGA
     [12, 210, 0, 2],  # SIZE_DIV8  80x60   ...
     [15, 252, 3, 2],  # SIZE_DIV16 40x30
