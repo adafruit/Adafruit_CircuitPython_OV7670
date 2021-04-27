@@ -81,7 +81,7 @@ print(width, height, cam.width, cam.height)
 if bitmap is None:
     raise SystemExit("Could not allocate a bitmap")
 
-g = Group(scale=1)
+g = Group(scale=1, x=(width - cam.width) // 2, y=(height - cam.height) // 2)
 tg = TileGrid(
     bitmap, pixel_shader=ColorConverter(input_colorspace=Colorspace.RGB565_SWAPPED)
 )
