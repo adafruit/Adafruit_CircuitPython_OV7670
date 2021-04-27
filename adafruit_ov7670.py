@@ -652,7 +652,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         ysc = self._read_register(_OV7670_REG_SCALING_YSC) & ~0x80
         if pattern & 1:
             xsc |= 0x80
-        if pattern & 3:
+        if pattern & 2:
             ysc |= 0x80
         # Write modified result back to SCALING_XSC and SCALING_YSC
         self._write_register(_OV7670_REG_SCALING_XSC, xsc)
