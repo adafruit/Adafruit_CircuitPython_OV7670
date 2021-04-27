@@ -23,6 +23,8 @@ Introduction
 
 CircuitPython driver for OV7670 cameras
 
+.. warning::
+    This module requires the CircuitPython ``imagecapture`` module which is only in the unreleased development version ("Absolute Newest") of CircuitPython and is only supported on specific boards.
 
 Dependencies
 =============
