@@ -8,14 +8,6 @@ Capture an image from the camera and display it on a supported LCD.
 """
 
 import time
-from adafruit_ov7670 import (
-    OV7670,
-    OV7670_SIZE_DIV1,
-    OV7670_SIZE_DIV16,
-    OV7670_TEST_PATTERN_COLOR_BAR,
-    OV7670_TEST_PATTERN_SHIFTING_1,
-    OV7670_TEST_PATTERN_COLOR_BAR_FADE,
-)
 from displayio import (
     Bitmap,
     Group,
@@ -29,6 +21,11 @@ from adafruit_st7789 import ST7789
 import board
 import busio
 import digitalio
+from adafruit_ov7670 import (
+    OV7670,
+    OV7670_SIZE_DIV1,
+    OV7670_SIZE_DIV16,
+)
 
 # Set up the display (You must customize this block for your display!)
 release_displays()
