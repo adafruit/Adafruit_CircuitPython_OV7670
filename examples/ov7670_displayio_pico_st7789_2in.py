@@ -45,7 +45,16 @@ with digitalio.DigitalInOut(board.GP10) as reset:
 # Set up the camera (you must customize this for your board!)
 cam = OV7670(
     bus,
-    data0=board.GP12,  # [16]     [org]
+    data_pins=[
+        board.GP12,
+        board.GP13,
+        board.GP14,
+        board.GP15,
+        board.GP16,
+        board.GP17,
+        board.GP18,
+        board.GP19,
+    ],  # [16]     [org] etc
     clock=board.GP11,  # [15]     [blk]
     vsync=board.GP7,  # [10]     [brn]
     href=board.GP21,  # [27/o14] [red]

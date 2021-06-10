@@ -56,7 +56,7 @@ On an Adafruit Metro M4 Grand Central, capture a 40x30 image into a buffer:
 
     cam = OV7670(
         bus,
-        data0=board.PCC_D0,
+        data_pins=[board.PCC_D0, board.PCC_D1, board.PCC_D2, board.PCC_D3, board.PCC_D4, board.PCC_D5, board.PCC_D6, board.PCC_D7],
         clock=board.PCC_CLK,
         vsync=board.PCC_DEN1,
         href=board.PCC_DEN2,

@@ -506,7 +506,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
     def __init__(
         self,
         i2c_bus,
-        data0,
+        data_pins,
         clock,
         vsync,
         href,
@@ -519,7 +519,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         """
         Args:
             i2c_bus (busio.I2C): The I2C bus used to configure the OV7670
-            data0 (microcontroller.Pin): The first of 8 parallel data capture pins.
+            data_pins (List[microcontroller.Pin]): A list of 8 data pins, in order.
             clock (microcontroller.Pin): The pixel clock from the OV7670.
             vsync (microcontroller.Pin): The vsync signal from the OV7670.
             href (microcontroller.Pin): The href signal from the OV7670, \
@@ -581,7 +581,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         self._night = OV7670_NIGHT_MODE_OFF
 
         self._imagecapture = imagecapture.ParallelImageCapture(
-            data0=data0, clock=clock, vsync=vsync, href=href
+            data_pins=data_pins, clock=clock, vsync=vsync, href=href
         )
 
     def capture(self, buf):

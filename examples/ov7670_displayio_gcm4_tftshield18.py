@@ -51,7 +51,16 @@ class OV7670_GrandCentral(OV7670):
             self,
             bus,
             mclk=board.PCC_XCLK,
-            data0=board.PCC_D0,
+            data_pins=[
+                board.PCC_D0,
+                board.PCC_D1,
+                board.PCC_D2,
+                board.PCC_D3,
+                board.PCC_D4,
+                board.PCC_D5,
+                board.PCC_D6,
+                board.PCC_D7,
+            ],
             clock=board.PCC_CLK,
             vsync=board.PCC_DEN1,
             href=board.PCC_DEN2,
@@ -84,7 +93,6 @@ tg = displayio.TileGrid(
 )
 g.append(tg)
 display.show(g)
-buf = memoryview(bitmap)
 
 t0 = time.monotonic_ns()
 display.auto_refresh = False
