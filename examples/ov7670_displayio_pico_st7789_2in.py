@@ -78,7 +78,7 @@ for size in range(OV7670_SIZE_DIV1, OV7670_SIZE_DIV16 + 1):
     if cam.height > height:
         continue
     try:
-        bitmap = Bitmap(cam.width, cam.height, 65535)
+        bitmap = Bitmap(cam.width, cam.height, 65536)
         break
     except MemoryError:
         continue
