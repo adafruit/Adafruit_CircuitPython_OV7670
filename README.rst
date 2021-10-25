@@ -70,6 +70,11 @@ On an Adafruit Metro M4 Grand Central, capture a 40x30 image into a buffer:
 
     cam.capture(buf)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ov7670/en/latest/>`_.
+
 Contributing
 ============
 
