@@ -3,7 +3,7 @@ Introduction
 
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-ov7670/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/ov7670/en/latest/
+    :target: https://docs.circuitpython.org/projects/ov7670/en/latest/
     :alt: Documentation Status
 
 
@@ -73,7 +73,7 @@ On an Adafruit Metro M4 Grand Central, capture a 40x30 image into a buffer:
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/ov7670/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/ov7670/en/latest/>`_.
 
 Contributing
 ============
