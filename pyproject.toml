@@ -12,7 +12,7 @@ requires = [
 [project]
 name = "adafruit-circuitpython-ov7670"
 description = "CircuitPython driver for OV7670 cameras"
-version = "0.0.0-auto.0"
+version = "0.0.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
