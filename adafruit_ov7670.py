@@ -24,8 +24,6 @@ Implementation Notes
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
-# pylint: disable=too-many-arguments
-
 # imports
 
 __version__ = "0.0.0+auto.0"
@@ -511,6 +509,8 @@ _window = [
 class OV7670:  # pylint: disable=too-many-instance-attributes
     """Library for the OV7670 digital camera"""
 
+    # pylint: disable=too-many-arguments
+
     def __init__(
         self,
         i2c_bus: I2C,
@@ -523,7 +523,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         mclk: Optional[Pin] = None,
         mclk_frequency: int = 16_000_000,
         i2c_address: int = 0x21,
-    ) -> None:  # pylint: disable=too-many-arguments
+    ) -> None:
         """
         Args:
             i2c_bus (busio.I2C): The I2C bus used to configure the OV7670
