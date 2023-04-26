@@ -24,6 +24,8 @@ Implementation Notes
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
+# pylint: disable=too-many-arguments
+
 # imports
 
 __version__ = "0.0.0+auto.0"
@@ -39,6 +41,8 @@ from micropython import const
 
 try:
     from typing import List, Optional, Union
+    from busio import I2C
+    from microcontroller import Pin
 except ImportError:
     pass
 
@@ -509,14 +513,14 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     def __init__(
         self,
-        i2c_bus: busio.I2C,
-        data_pins: List[microcontroller.Pin],
-        clock: microcontroller.Pin,
-        vsync: microcontroller.Pin,
-        href: microcontroller.Pin,
-        shutdown: Optional[microcontroller.Pin] = None,
-        reset: Optional[microcontroller.Pin] = None,
-        mclk: Optional[microcontroller.Pin] = None,
+        i2c_bus: I2C,
+        data_pins: List[Pin],
+        clock: Pin,
+        vsync: Pin,
+        href: Pin,
+        shutdown: Optional[Pin] = None,
+        reset: Optional[Pin] = None,
+        mclk: Optional[Pin] = None,
         mclk_frequency: int = 16_000_000,
         i2c_address: int = 0x21,
     ) -> None:  # pylint: disable=too-many-arguments
