@@ -35,8 +35,12 @@ import digitalio
 import imagecapture
 import pwmio
 from adafruit_bus_device.i2c_device import I2CDevice
-
 from micropython import const
+
+try:
+    from typing import List, Optional, Union
+except ImportError:
+    pass
 
 # Supported color formats
 OV7670_COLOR_RGB = 0
@@ -505,17 +509,17 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     def __init__(
         self,
-        i2c_bus,
-        data_pins,
-        clock,
-        vsync,
-        href,
-        shutdown=None,
-        reset=None,
-        mclk=None,
-        mclk_frequency=16_000_000,
-        i2c_address=0x21,
-    ):  # pylint: disable=too-many-arguments
+        i2c_bus: busio.I2C,
+        data_pins: List[microcontroller.Pin],
+        clock: microcontroller.Pin,
+        vsync: microcontroller.Pin,
+        href: microcontroller.Pin,
+        shutdown: Optional[microcontroller.Pin] = None,
+        reset: Optional[microcontroller.Pin] = None,
+        mclk: Optional[microcontroller.Pin] = None,
+        mclk_frequency: int = 16_000_000,
+        i2c_address: int = 0x21,
+    ) -> None:  # pylint: disable=too-many-arguments
         """
         Args:
             i2c_bus (busio.I2C): The I2C bus used to configure the OV7670
@@ -584,7 +588,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
             data_pins=data_pins, clock=clock, vsync=vsync, href=href
         )
 
-    def capture(self, buf):
+    def capture(self, buf: Union[bytearray, memoryview]) -> None:
         """Capture an image into the buffer.
 
         Args:
@@ -594,7 +598,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         self._imagecapture.capture(buf)
 
     @property
-    def mclk_frequency(self):
+    def mclk_frequency(self) -> Optional[int]:
         """Get the actual frequency the generated mclk, or None"""
         return self._mclk_pwm.frequency if self._mclk_pwm else None
 
@@ -611,16 +615,16 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         return 480 >> self._size
 
     @property
-    def colorspace(self):
+    def colorspace(self) -> Optional[int]:
         """Get or set the colorspace, one of the ``OV7670_COLOR_`` constants."""
         return self._colorspace
 
     @colorspace.setter
-    def colorspace(self, colorspace):
+    def colorspace(self, colorspace: int) -> None:
         self._colorspace = colorspace
         self._write_list(_OV7670_rgb if colorspace == OV7670_COLOR_RGB else _OV7670_yuv)
 
-    def deinit(self):
+    def deinit(self) -> None:
         """Deinitialize the camera"""
         self._imagecapture.deinit()
         if self._mclk_pwm:
@@ -631,7 +635,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
             self._reset.deinit()
 
     @property
-    def size(self):
+    def size(self) -> Optional[int]:
         """Get or set the captured image size, one of the ``OV7670_SIZE_`` constants."""
         return self._size
 
@@ -642,11 +646,11 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
 
     @property
     def test_pattern(self):
-        """Get or set the test pattern, one of the ``OV7670_TES_PATTERN_`` constants."""
+        """Get or set the test pattern, one of the ``OV7670_TEST_PATTERN_`` constants."""
         return self._test_pattern
 
     @test_pattern.setter
-    def test_pattern(self, pattern):
+    def test_pattern(self, pattern: int) -> None:
         # Modify only test pattern bits (not scaling bits)
         xsc = self._read_register(_OV7670_REG_SCALING_XSC) & ~0x80
         ysc = self._read_register(_OV7670_REG_SCALING_YSC) & ~0x80
@@ -658,7 +662,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         self._write_register(_OV7670_REG_SCALING_XSC, xsc)
         self._write_register(_OV7670_REG_SCALING_YSC, ysc)
 
-    def _set_flip(self):
+    def _set_flip(self) -> None:
         mvfp = self._read_register(_OV7670_REG_MVFP)
         if self._flip_x:
             mvfp |= _OV7670_MVFP_MIRROR
@@ -671,60 +675,60 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         self._write_register(_OV7670_REG_MVFP, mvfp)
 
     @property
-    def flip_x(self):
+    def flip_x(self) -> bool:
         """Get or set the X-flip flag"""
         return self._flip_x
 
     @flip_x.setter
-    def flip_x(self, value):
+    def flip_x(self, value: int) -> None:
         self._flip_x = bool(value)
         self._set_flip()
 
     @property
-    def flip_y(self):
+    def flip_y(self) -> bool:
         """Get or set the Y-flip flag"""
         return self._flip_y
 
     @flip_y.setter
-    def flip_y(self, value):
+    def flip_y(self, value: int) -> None:
         self._flip_y = bool(value)
         self._set_flip()
 
     @property
-    def night(self):
+    def night(self) -> int:
         """Get or set the night-vision mode, one of the ``OV7670_NIGHT_MODE_`` constants."""
         return self._night
 
     @night.setter
-    def night(self, value):
+    def night(self, value: int) -> None:
         com11 = self._read_register(_OV7670_REG_COM11)
         com11 = (com11 & 0b00011111) | value
         self._write_register(_OV7670_REG_COM11, com11)
         self._night = value
 
     @property
-    def product_id(self):
+    def product_id(self) -> int:
         """Get the product id (PID) register.  The expected value is 0x76."""
         return self._read_register(_OV7670_REG_PID)
 
     @property
-    def product_version(self):
+    def product_version(self) -> int:
         """Get the version (VER) register.  The expected value is 0x73."""
         return self._read_register(_OV7670_REG_VER)
 
-    def _write_list(self, reg_list):
+    def _write_list(self, reg_list: bytes) -> None:
         for i in range(0, len(reg_list), 2):
             self._write_register(reg_list[i], reg_list[i + 1])
             time.sleep(0.001)
 
-    def _write_register(self, reg, value):
+    def _write_register(self, reg: int, value: int) -> None:
         b = bytearray(2)
         b[0] = reg
         b[1] = value
         with self._i2c_device as i2c:
             i2c.write(b)
 
-    def _read_register(self, reg):
+    def _read_register(self, reg: int) -> int:
         b = bytearray(1)
         b[0] = reg
         with self._i2c_device as i2c:
@@ -733,8 +737,8 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         return b[0]
 
     def _frame_control(
-        self, size, vstart, hstart, edge_offset, pclk_delay
-    ):  # pylint: disable=too-many-arguments
+        self, size: int, vstart: int, hstart: int, edge_offset: int, pclk_delay: int
+    ) -> None:  # pylint: disable=too-many-arguments
 
         # Enable downsampling if sub-VGA, and zoom if 1:16 scale
         value = _OV7670_COM3_DCWEN if (size > OV7670_SIZE_DIV1) else 0
