@@ -36,9 +36,10 @@ import imagecapture
 import pwmio
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
+import circuitpython_typing
 
 try:
-    from typing import List, Optional, Union
+    from typing import List, Optional
     from busio import I2C
     from microcontroller import Pin
 except ImportError:
@@ -592,7 +593,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
             data_pins=data_pins, clock=clock, vsync=vsync, href=href
         )
 
-    def capture(self, buf: Union[bytearray, memoryview]) -> None:
+    def capture(self, buf: circuitpython_typing.WritableBuffer) -> None:
         """Capture an image into the buffer.
 
         Args:
@@ -619,7 +620,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         return 480 >> self._size
 
     @property
-    def colorspace(self) -> Optional[int]:
+    def colorspace(self) -> int:
         """Get or set the colorspace, one of the ``OV7670_COLOR_`` constants."""
         return self._colorspace
 
@@ -639,7 +640,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
             self._reset.deinit()
 
     @property
-    def size(self) -> Optional[int]:
+    def size(self) -> int:
         """Get or set the captured image size, one of the ``OV7670_SIZE_`` constants."""
         return self._size
 
@@ -684,7 +685,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         return self._flip_x
 
     @flip_x.setter
-    def flip_x(self, value: int) -> None:
+    def flip_x(self, value: bool) -> None:
         self._flip_x = bool(value)
         self._set_flip()
 
@@ -694,7 +695,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
         return self._flip_y
 
     @flip_y.setter
-    def flip_y(self, value: int) -> None:
+    def flip_y(self, value: bool) -> None:
         self._flip_y = bool(value)
         self._set_flip()
 
