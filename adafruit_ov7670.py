@@ -36,7 +36,7 @@ import imagecapture
 import pwmio
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
-import circuitpython_typing
+from circuitpython_typing import WriteableBuffer
 
 try:
     from typing import List, Optional
@@ -593,7 +593,7 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
             data_pins=data_pins, clock=clock, vsync=vsync, href=href
         )
 
-    def capture(self, buf: circuitpython_typing.WritableBuffer) -> None:
+    def capture(self, buf: WriteableBuffer) -> None:
         """Capture an image into the buffer.
 
         Args:
