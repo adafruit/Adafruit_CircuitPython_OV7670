@@ -36,12 +36,12 @@ import imagecapture
 import pwmio
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
-from circuitpython_typing import WriteableBuffer
 
 try:
     from typing import List, Optional
     from busio import I2C
     from microcontroller import Pin
+    from circuitpython_typing import WriteableBuffer
 except ImportError:
     pass
 
