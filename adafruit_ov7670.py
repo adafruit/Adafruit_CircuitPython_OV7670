@@ -744,7 +744,6 @@ class OV7670:  # pylint: disable=too-many-instance-attributes
     def _frame_control(
         self, size: int, vstart: int, hstart: int, edge_offset: int, pclk_delay: int
     ) -> None:  # pylint: disable=too-many-arguments
-
         # Enable downsampling if sub-VGA, and zoom if 1:16 scale
         value = _OV7670_COM3_DCWEN if (size > OV7670_SIZE_DIV1) else 0
         if size == OV7670_SIZE_DIV16:
