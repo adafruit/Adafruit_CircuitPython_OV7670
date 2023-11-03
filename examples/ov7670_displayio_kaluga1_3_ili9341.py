@@ -71,7 +71,7 @@ tg = displayio.TileGrid(
     ),
 )
 g.append(tg)
-display.show(g)
+display.root_group = g
 
 t0 = time.monotonic_ns()
 display.auto_refresh = False
