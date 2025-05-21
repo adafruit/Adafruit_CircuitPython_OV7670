@@ -4,22 +4,23 @@
 # SPDX-License-Identifier: Unlicense
 
 import time
+
 import board
 import busio
 import digitalio
 import displayio
 from adafruit_seesaw.tftshield18 import TFTShield18
 from adafruit_st7735r import ST7735R
-from adafruit_ov7670 import (  # pylint: disable=unused-import
+
+from adafruit_ov7670 import (
     OV7670,
-    OV7670_TEST_PATTERN_COLOR_BAR,
+    OV7670_NIGHT_MODE_2,
     OV7670_SIZE_DIV4,
     OV7670_SIZE_DIV8,
-    OV7670_NIGHT_MODE_2,
+    OV7670_TEST_PATTERN_COLOR_BAR,
 )
 
 # Pylint is unable to see that the "size" property of OV7670_GrandCentral exists
-# pylint: disable=attribute-defined-outside-init
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
@@ -33,9 +34,7 @@ tft_dc = board.D8
 display_bus = displayio.FourWire(spi, command=tft_dc, chip_select=tft_cs)
 
 ss.tft_reset()
-display = ST7735R(
-    display_bus, width=160, height=128, rotation=90, bgr=True, auto_refresh=False
-)
+display = ST7735R(display_bus, width=160, height=128, rotation=90, bgr=True, auto_refresh=False)
 
 ss.set_backlight(True)
 
@@ -87,9 +86,7 @@ g = displayio.Group(scale=1)
 bitmap = displayio.Bitmap(160, 120, 65536)
 tg = displayio.TileGrid(
     bitmap,
-    pixel_shader=displayio.ColorConverter(
-        input_colorspace=displayio.Colorspace.RGB565_SWAPPED
-    ),
+    pixel_shader=displayio.ColorConverter(input_colorspace=displayio.Colorspace.RGB565_SWAPPED),
 )
 g.append(tg)
 display.root_group = g

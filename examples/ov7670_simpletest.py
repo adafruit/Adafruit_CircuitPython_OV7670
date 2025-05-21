@@ -19,14 +19,14 @@ the test pattern!
 import sys
 import time
 
-import digitalio
-import busio
 import board
+import busio
+import digitalio
 
-from adafruit_ov7670 import (  # pylint: disable=unused-import
+from adafruit_ov7670 import (
     OV7670,
-    OV7670_SIZE_DIV16,
     OV7670_COLOR_YUV,
+    OV7670_SIZE_DIV16,
     OV7670_TEST_PATTERN_COLOR_BAR_FADE,
 )
 
@@ -65,9 +65,7 @@ while True:
     for j in range(cam.height):
         sys.stdout.write(f"\033[{j}H")
         for i in range(cam.width):
-            row[i * 2] = row[i * 2 + 1] = chars[
-                buf[2 * (width * j + i)] * (len(chars) - 1) // 255
-            ]
+            row[i * 2] = row[i * 2 + 1] = chars[buf[2 * (width * j + i)] * (len(chars) - 1) // 255]
         sys.stdout.write(row)
         sys.stdout.write("\033[K")
     sys.stdout.write("\033[J")

@@ -8,19 +8,21 @@ Capture an image from the camera and display it on a supported LCD.
 """
 
 import time
-from displayio import (
-    Bitmap,
-    Group,
-    TileGrid,
-    FourWire,
-    release_displays,
-    ColorConverter,
-    Colorspace,
-)
-from adafruit_st7789 import ST7789
+
 import board
 import busio
 import digitalio
+from adafruit_st7789 import ST7789
+from displayio import (
+    Bitmap,
+    ColorConverter,
+    Colorspace,
+    FourWire,
+    Group,
+    TileGrid,
+    release_displays,
+)
+
 from adafruit_ov7670 import (
     OV7670,
     OV7670_SIZE_DIV1,
@@ -88,9 +90,7 @@ if bitmap is None:
     raise SystemExit("Could not allocate a bitmap")
 
 g = Group(scale=1, x=(width - cam.width) // 2, y=(height - cam.height) // 2)
-tg = TileGrid(
-    bitmap, pixel_shader=ColorConverter(input_colorspace=Colorspace.RGB565_SWAPPED)
-)
+tg = TileGrid(bitmap, pixel_shader=ColorConverter(input_colorspace=Colorspace.RGB565_SWAPPED))
 g.append(tg)
 display.root_group = g
 

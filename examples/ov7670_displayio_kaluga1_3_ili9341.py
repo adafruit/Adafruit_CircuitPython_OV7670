@@ -20,19 +20,18 @@ I2C pull-ups(!)
 """
 
 import time
+
 import board
 import busio
 import displayio
 from adafruit_ili9341 import ILI9341
-from adafruit_ov7670 import (  # pylint: disable=unused-import
-    OV7670,
-    OV7670_TEST_PATTERN_COLOR_BAR,
-    OV7670_SIZE_DIV2,
-    OV7670_NIGHT_MODE_2,
-)
 
-# Pylint is unable to see that the "size" property of OV7670_GrandCentral exists
-# pylint: disable=attribute-defined-outside-init
+from adafruit_ov7670 import (
+    OV7670,
+    OV7670_NIGHT_MODE_2,
+    OV7670_SIZE_DIV2,
+    OV7670_TEST_PATTERN_COLOR_BAR,
+)
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
@@ -66,9 +65,7 @@ g = displayio.Group(scale=1)
 bitmap = displayio.Bitmap(320, 240, 65536)
 tg = displayio.TileGrid(
     bitmap,
-    pixel_shader=displayio.ColorConverter(
-        input_colorspace=displayio.Colorspace.RGB565_SWAPPED
-    ),
+    pixel_shader=displayio.ColorConverter(input_colorspace=displayio.Colorspace.RGB565_SWAPPED),
 )
 g.append(tg)
 display.root_group = g
